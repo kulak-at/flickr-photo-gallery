@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { PhotoTile } from './components/PhotoTile';
+import { Spinner } from 'components/Spinner';
 
 import { photosGet, photoGetDetails } from 'actions/photosActions';
 
@@ -39,10 +40,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class Dashboard extends Component {
-    constructor () {
-        super();
-    }
-
     componentWillMount () {
         this.props.getPhotos();
     }
@@ -56,15 +53,7 @@ class Dashboard extends Component {
             });
         };
 
-        const _generateCloak = () => {
-            return (
-                <div className="col-sm-12 text-center">
-                    <div>Loading...</div>
-                </div>
-            );
-        };
-
-        const photoContent = this.props.photos.list.length ? _generateList() : _generateCloak();
+        const photoContent = this.props.photos.list.length ? _generateList() : <Spinner/>;
 
         return (
             <div className="container-fluid">

@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { Spinner } from 'components/Spinner';
+
 class PhotoTile extends PureComponent {
     componentWillMount () {
         this.props.getDetails(this.props.photoData.id);
@@ -31,7 +33,7 @@ class PhotoTile extends PureComponent {
             );
         };
         
-        const detailedInfo = photoData.details.id ? _renderDetailedInfo() : <div className="spinner"></div>;
+        const detailedInfo = photoData.details.id ? _renderDetailedInfo() : <Spinner/>;
 
         return (
             <div className="col-xs-12 col-md-6 col-lg-3">
