@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 class PhotoTile extends PureComponent {
     componentWillMount () {
@@ -8,6 +9,11 @@ class PhotoTile extends PureComponent {
 
     render () {
         const { photoData } = this.props;
+
+        const classNames = classnames({
+            'photo-tile-container': true,
+            loading: !this.props.photoData.details.id
+        });
         
         const _renderDetailedInfo = () => {
             return (
@@ -21,13 +27,14 @@ class PhotoTile extends PureComponent {
             );
         };
         
-        const detailedInfo = photoData.details.id ? _renderDetailedInfo() : <span>Loading</span>;
+        const detailedInfo = photoData.details.id ? _renderDetailedInfo() : null;
 
         return (
             <div className="col-xs-12 col-md-6 col-lg-3">
-                <div className="photo-tile-container">
+                <div className={classNames}>
                     <div className="card">
                         <div className="card-body">
+                            {this.props.photoData.details.id ? null : <div className="spinner"></div>}
                             <div 
                                 className="photo-tile" 
                                 style={{backgroundImage: `url(https://farm${photoData.farm}.staticflickr.com/${photoData.server}/${photoData.id}_${photoData.secret}.jpg)`}}>

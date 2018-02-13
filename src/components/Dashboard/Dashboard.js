@@ -56,14 +56,20 @@ class Dashboard extends Component {
             });
         };
 
-        const mappedList = this.props.photos.list.length ? _generateList() : <span>Loading...</span>;
+        const _generateCloak = () => {
+            return (
+                <div className="col-sm-12 text-center">
+                    <div>Loading...</div>
+                </div>
+            );
+        };
+
+        const photoContent = this.props.photos.list.length ? _generateList() : _generateCloak();
 
         return (
-            <div className="card text-center">
-                <div className="card-body">
-                    <div className="row">
-                        {mappedList}
-                    </div>
+            <div className="container-fluid">
+                <div className="row">
+                    {photoContent}
                 </div>
             </div>
         );
