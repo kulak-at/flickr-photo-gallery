@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as _ from 'lodash';
 
 import { PhotoTile } from './components/PhotoTile';
 import { Spinner } from 'components/Spinner';
@@ -55,16 +56,39 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class Dashboard extends Component {
+    constructor () {
+        super();
+        this.state = {
+            photoLimit: 9
+        };
+    }
+
     componentWillMount () {
         this.props.getPhotos();
+        window.addEventListener('scroll', this.handleScroll.bind(this));
+    }
+
+    handleScroll () {
+        const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+        const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+        const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+        
+        if (scrolledToBottom) {
+            this.setState({
+                photoLimit: this.state.photoLimit + 10
+            });
+        }
     }
 
     render () {
         const _generateList = () => {
             return this.props.photos.list.map((item, idx) => {
-                return (
-                    <PhotoTile key={idx} photoData={item} getDetails={this.props.getPhotoDetails}/>
-                );
+                if (idx <= this.state.photoLimit) {
+                    return (
+                        <PhotoTile key={idx} photoData={item} getDetails={this.props.getPhotoDetails}/>
+                    );
+                }
             });
         };
 
