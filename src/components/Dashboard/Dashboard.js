@@ -6,6 +6,7 @@ import { PhotoTile } from './components/PhotoTile';
 import { Spinner } from 'components/Spinner';
 
 import { photosGet, photoGetDetails } from 'actions/photosActions';
+import { alertShow } from 'actions/alertActions';
 
 const KEY = '26c374c770dc49702c16c6fdf0ac60c9';
 
@@ -19,11 +20,18 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getPhotos: () => {
             dispatch(() => {
-                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=canine&per_page=20&api_key=${KEY}&format=json&nojsoncallback=1`)
+                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=canine&per_page=100&api_key=${KEY}&format=json&nojsoncallback=1`)
                     .then((resp) => resp.json())
                     .then((resp) => {
-                        const preparedPhotos = resp.photos.photo.map((photo) => photo = {...photo, details: {}});
-                        dispatch(photosGet(preparedPhotos));
+                        if (resp.stat === 'fail') {
+                            dispatch(alertShow(resp.message));
+                        } else {
+                            const preparedPhotos = resp.photos.photo.map((photo) => photo = {...photo, details: {}});
+                            dispatch(photosGet(preparedPhotos));
+                        }
+                    })
+                    .catch((err) => {
+                        throw new Error(err);
                     });
             });
         },
@@ -32,7 +40,14 @@ const mapDispatchToProps = (dispatch) => {
                 fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&photo_id=${photoId}&api_key=${KEY}&format=json&nojsoncallback=1`)
                     .then((resp) => resp.json())
                     .then((resp) => {
-                        dispatch(photoGetDetails(resp.photo));
+                        if (resp.stat === 'fail') {
+                            dispatch(alertShow(resp.message));
+                        } else {
+                            dispatch(photoGetDetails(resp.photo));
+                        }
+                    })
+                    .catch((err) => {
+                        throw new Error(err);
                     });
             });
         }
