@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { photosGet } from 'actions/photosActions';
+import { PhotoTile } from './components/PhotoTile';
+
+import { photosGet, photoGetDetails } from 'actions/photosActions';
 
 const KEY = '26c374c770dc49702c16c6fdf0ac60c9';
 
@@ -19,16 +21,17 @@ const mapDispatchToProps = (dispatch) => {
                 fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=canine&per_page=20&api_key=${KEY}&format=json&nojsoncallback=1`)
                     .then((resp) => resp.json())
                     .then((resp) => {
-                        resp.photos.photo.map((photo) => {
-                            Object.assign(photo, {
-                                getDetails: () => {
-                                    return fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&photo_id=${photo.id}&api_key=${KEY}&format=json&nojsoncallback=1`)
-                                        .then((details) => details.json())
-                                        .then((details) => details);
-                                }
-                            });
-                        });
-                        dispatch(photosGet(resp.photos.photo));
+                        const preparedPhotos = resp.photos.photo.map((photo) => photo = {...photo, details: {}});
+                        dispatch(photosGet(preparedPhotos));
+                    });
+            });
+        },
+        getPhotoDetails: (photoId) => {
+            dispatch(() => {
+                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&photo_id=${photoId}&api_key=${KEY}&format=json&nojsoncallback=1`)
+                    .then((resp) => resp.json())
+                    .then((resp) => {
+                        dispatch(photoGetDetails(resp.photo));
                     });
             });
         }
@@ -46,21 +49,14 @@ class Dashboard extends Component {
 
     render () {
         const _generateList = () => {
-
             return this.props.photos.list.map((item, idx) => {
                 return (
-                    <div className="col-xs-12 col-md-6 col-lg-3" key={idx}>
-                        {/* Todo: make component for each img with lazy loading of details */}
-                        <div 
-                            className="single-photo" 
-                            style={{backgroundImage: `url(https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg)`}}>
-                        </div>
-                    </div>
+                    <PhotoTile key={idx} photoData={item} getDetails={this.props.getPhotoDetails}/>
                 );
             });
         };
 
-        const mappedList = this.props.photos.list.length ? _generateList() : <span>Loading</span>;
+        const mappedList = this.props.photos.list.length ? _generateList() : <span>Loading...</span>;
 
         return (
             <div className="card text-center">
@@ -80,5 +76,6 @@ export { connectedDashboard as Dashboard };
 
 Dashboard.propTypes = {
     getPhotos: PropTypes.func,
+    getPhotoDetails: PropTypes.func,
     photos: PropTypes.object
 };

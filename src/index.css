@@ -4,8 +4,12 @@ body {
   font-family: sans-serif;
 }
 
-.single-photo {
+.photo-tile-container {
+  margin-top: 1rem;
+}
+
+.photo-tile-container .photo-tile {
   min-height: 350px;
   background-size: cover;
-  margin-top: 30px;
+  margin-bottom: 0.5rem;
 }
