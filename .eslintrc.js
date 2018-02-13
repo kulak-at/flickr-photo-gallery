@@ -27,6 +27,7 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "react/display-name": [0],
     }
 };
