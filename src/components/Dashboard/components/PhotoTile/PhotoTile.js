@@ -18,6 +18,10 @@ class PhotoTile extends PureComponent {
         const _renderDetailedInfo = () => {
             return (
                 <div>
+                    <div 
+                        className="photo-tile" 
+                        style={{backgroundImage: `url(https://farm${photoData.farm}.staticflickr.com/${photoData.server}/${photoData.id}_${photoData.secret}.jpg)`}}>
+                    </div>
                     <h5 className="card-title">{photoData.details.title._content}</h5>
                     <div className="card-text">Author: {photoData.details.owner.username}</div>
                     <div className="card-text">Date: {photoData.details.dates.taken}</div>
@@ -27,18 +31,13 @@ class PhotoTile extends PureComponent {
             );
         };
         
-        const detailedInfo = photoData.details.id ? _renderDetailedInfo() : null;
+        const detailedInfo = photoData.details.id ? _renderDetailedInfo() : <div className="spinner"></div>;
 
         return (
             <div className="col-xs-12 col-md-6 col-lg-3">
                 <div className={classNames}>
                     <div className="card">
-                        <div className="card-body">
-                            {this.props.photoData.details.id ? null : <div className="spinner"></div>}
-                            <div 
-                                className="photo-tile" 
-                                style={{backgroundImage: `url(https://farm${photoData.farm}.staticflickr.com/${photoData.server}/${photoData.id}_${photoData.secret}.jpg)`}}>
-                            </div>
+                        <div className="card-body">        
                             {detailedInfo}
                         </div>
                     </div>

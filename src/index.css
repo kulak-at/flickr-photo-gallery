@@ -18,6 +18,10 @@ body {
   opacity: 0.5;
 }
 
+.photo-tile-container .card-body {
+  min-height: 350px;
+}
+
 .spinner {
   position: absolute;
   display: block;
