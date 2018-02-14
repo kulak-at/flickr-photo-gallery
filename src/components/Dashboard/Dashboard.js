@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link, withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as _ from 'lodash';
 
-import { PhotoTile } from './components/PhotoTile';
-import { Spinner } from 'components/Spinner';
+import { Photos } from './components/Photos';
+import { Map } from './components/Map';
 
-import { photosGet, photoGetDetails } from 'actions/photosActions';
+import { photosGet, photoGetDetails, photosClear } from 'actions/photosActions';
 import { alertShow } from 'actions/alertActions';
 
 const KEY = '26c374c770dc49702c16c6fdf0ac60c9';
@@ -51,65 +51,50 @@ const mapDispatchToProps = (dispatch) => {
                         throw new Error(err);
                     });
             });
+        },
+        clearPhotos: () => {
+            dispatch(photosClear());
         }
     };
 };
 
 class Dashboard extends Component {
-    constructor () {
-        super();
-        this.state = {
-            photoLimit: 9
-        };
-    }
-
-    componentWillMount () {
-        this.props.getPhotos();
-        window.addEventListener('scroll', this.handleScroll.bind(this));
-    }
-
-    handleScroll () {
-        const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-        const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
-        const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-        const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-        
-        if (scrolledToBottom) {
-            this.setState({
-                photoLimit: this.state.photoLimit + 10
-            });
-        }
+    constructor (props) {
+        super(props);
     }
 
     render () {
-        const _generateList = () => {
-            return this.props.photos.list.map((item, idx) => {
-                if (idx <= this.state.photoLimit) {
-                    return (
-                        <PhotoTile key={idx} photoData={item} getDetails={this.props.getPhotoDetails}/>
-                    );
-                }
-            });
-        };
+        const { getPhotos, getPhotoDetails, clearPhotos, photos } = this.props;
 
-        const photoContent = this.props.photos.list.length ? _generateList() : <Spinner/>;
+        const callbacks = {
+            getPhotos,
+            getPhotoDetails,
+            clearPhotos
+        };
 
         return (
             <div className="container-fluid">
-                <div className="row">
-                    {photoContent}
-                </div>
+                <h1>Flickr Photo Gallery</h1>
+                <ul className="nav">
+                    <li className="nav-item"><Link className="nav-link" to={'/'}>Photos</Link></li>
+                    <li className="nav-item"><Link className="nav-link" to={'/map'}>Map</Link></li>
+                </ul>
+                
+                <Route exact path="/" render={() => <Photos photos={photos} callbacks={callbacks}/>} />
+                <Route path="/map" render={() => <Map photos={photos} callbacks={callbacks}/>} />
             </div>
         );
     }
 }
 
-const connectedDashboard = connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+const connectedDashboard = withRouter(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
 
 export { connectedDashboard as Dashboard };
 
 Dashboard.propTypes = {
     getPhotos: PropTypes.func,
     getPhotoDetails: PropTypes.func,
-    photos: PropTypes.object
+    clearPhotos: PropTypes.func,
+    photos: PropTypes.object,
+    match: PropTypes.object
 };

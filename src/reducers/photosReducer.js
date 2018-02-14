@@ -1,10 +1,11 @@
-import { PHOTOS_GET, PHOTO_GET_DETAILS } from 'actions/actionTypes';
+import { PHOTOS_GET, PHOTO_GET_DETAILS, PHOTOS_CLEAR } from 'actions/actionTypes';
 
 const defaultState = {
     list: []
 };
 
 export default function photosReducer (state = defaultState, action) {
+    console.log(action.payload);
     switch (action.type) {
     case PHOTOS_GET:
         state = {...state, list: action.payload};
@@ -17,6 +18,10 @@ export default function photosReducer (state = defaultState, action) {
                 (item) => item.id === action.payload.id ? {...item, details: action.payload} : item
             ))
         };
+        break;
+    
+    case PHOTOS_CLEAR:
+        state = {...state, list: []};
         break;
 
     default:
