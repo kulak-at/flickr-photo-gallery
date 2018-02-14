@@ -5,7 +5,6 @@ const defaultState = {
 };
 
 export default function photosReducer (state = defaultState, action) {
-    console.log(action.payload);
     switch (action.type) {
     case PHOTOS_GET:
         state = {...state, list: action.payload};

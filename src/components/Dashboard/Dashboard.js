@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getPhotos: () => {
             dispatch(() => {
-                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=canine&per_page=100&api_key=${KEY}&format=json&nojsoncallback=1`)
+                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=canine&per_page=10&api_key=${KEY}&format=json&nojsoncallback=1`)
                     .then((resp) => resp.json())
                     .then((resp) => {
                         if (resp.stat === 'fail') {
@@ -59,10 +59,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class Dashboard extends Component {
-    constructor (props) {
-        super(props);
-    }
-
     render () {
         const { getPhotos, getPhotoDetails, clearPhotos, photos } = this.props;
 
