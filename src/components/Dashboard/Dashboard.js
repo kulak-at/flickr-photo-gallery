@@ -6,10 +6,9 @@ import { connect } from 'react-redux';
 import { Photos } from './components/Photos';
 import { Maps } from './components/Maps';
 
-import { photosGet, photoGetDetails, photosClear } from 'actions/photosActions';
-import { alertShow } from 'actions/alertActions';
+import api from 'utils/api';
 
-const KEY = '26c374c770dc49702c16c6fdf0ac60c9';
+import { photosGet, photoGetDetails, photosClear } from 'actions/photosActions';
 
 const mapStateToProps = (state) => {
     return {
@@ -21,35 +20,23 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getPhotos: () => {
             dispatch(() => {
-                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=dog&per_page=100&api_key=${KEY}&format=json&nojsoncallback=1`)
-                    .then((resp) => resp.json())
+                api.get('photos.search', '&tags=dog&per_page=100')
                     .then((resp) => {
-                        if (resp.stat === 'fail') {
-                            dispatch(alertShow(resp.message));
-                        } else {
+                        if (!resp.code) {
                             const preparedPhotos = resp.photos.photo.map((photo) => photo = {...photo, details: {}});
                             dispatch(photosGet(preparedPhotos));
                         }
                     })
-                    .catch((err) => {
-                        throw new Error(err);
-                    });
             });
         },
         getPhotoDetails: (photoId) => {
             dispatch(() => {
-                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&photo_id=${photoId}&api_key=${KEY}&format=json&nojsoncallback=1`)
-                    .then((resp) => resp.json())
+                api.get('photos.getInfo', `&photo_id=${photoId}`)
                     .then((resp) => {
-                        if (resp.stat === 'fail') {
-                            dispatch(alertShow(resp.message));
-                        } else {
+                        if (!resp.code) {
                             dispatch(photoGetDetails(resp.photo));
                         }
                     })
-                    .catch((err) => {
-                        throw new Error(err);
-                    });
             });
         },
         clearPhotos: () => {
