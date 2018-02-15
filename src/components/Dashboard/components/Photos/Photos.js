@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import MaterialIcon from 'material-icons-react';
 
 import { PhotoTile } from './components/PhotoTile';
 import { Spinner } from 'components/Spinner';
@@ -10,7 +11,7 @@ class Photos extends PureComponent {
         super(props);
 
         this.state = {
-            photoLimit: 9
+            photoLimit: 7
         };
     }
 
@@ -31,7 +32,7 @@ class Photos extends PureComponent {
         
         if (scrolledToBottom) {
             this.setState({
-                photoLimit: this.state.photoLimit + 10
+                photoLimit: this.state.photoLimit + 8
             });
         }
     }
@@ -55,6 +56,14 @@ class Photos extends PureComponent {
             <div className="container-fluid">
                 <div className="row">
                     {photoContent}
+                </div>
+                <div className="row">
+                    <div className="col-sm-12 text-center">
+                        <div className="mt-5">
+                            <div>Scroll down to load more photos</div>
+                            <MaterialIcon icon="cached" size='large'/>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
