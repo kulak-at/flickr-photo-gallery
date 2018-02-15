@@ -19,10 +19,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class Alert extends Component {
-    constructor (props) {
-        super(props);
-    }
-
     render () {
         const visibilityClass = this.props.alert.message ? '' : 'd-none';
 
