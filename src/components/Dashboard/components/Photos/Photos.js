@@ -39,9 +39,10 @@ class Photos extends PureComponent {
 
     render () {
         const { getPhotoDetails } = this.props.callbacks;
+        const { list } = this.props.photos;
 
         const _generateList = () => {
-            return this.props.photos.list.map((item, idx) => {
+            return list.map((item, idx) => {
                 if (idx <= this.state.photoLimit) {
                     return (
                         <PhotoTile key={idx} photoData={item} getDetails={getPhotoDetails}/>
@@ -50,7 +51,22 @@ class Photos extends PureComponent {
             });
         };
 
-        const photoContent = this.props.photos.list.length ? _generateList() : <Spinner/>;
+        const _generateScrollInfo = () => {
+            if (list.length && this.state.photoLimit < list.length) {
+                return (
+                    <div className="col-sm-12 text-center">
+                        <div className="my-5 pb-2">
+                            <div>Scroll down to load more photos</div>
+                            <MaterialIcon icon="cached" size='large'/>
+                        </div>
+                    </div>
+                )
+            } else {
+                return null;
+            }
+        }
+
+        const photoContent = list.length ? _generateList() : <Spinner/>;
 
         return (
             <div className="container-fluid">
@@ -58,12 +74,7 @@ class Photos extends PureComponent {
                     {photoContent}
                 </div>
                 <div className="row">
-                    <div className="col-sm-12 text-center">
-                        <div className="mt-5">
-                            <div>Scroll down to load more photos</div>
-                            <MaterialIcon icon="cached" size='large'/>
-                        </div>
-                    </div>
+                    {_generateScrollInfo()}
                 </div>
             </div>
         );

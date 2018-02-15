@@ -57,8 +57,7 @@ class Dashboard extends Component {
 
         return (
             <div className="container-fluid">
-                <h1>Flickr Photo Gallery</h1>
-                <ul className="nav">
+                <ul className="nav my-2">
                     <li className="nav-item"><Link className="nav-link" to={'/'}>Photos</Link></li>
                     <li className="nav-item"><Link className="nav-link" to={'/maps'}>Maps</Link></li>
                 </ul>

@@ -3,6 +3,8 @@ import GoogleMapReact from 'google-map-react';
 import MaterialIcon from 'material-icons-react';
 import PropTypes from 'prop-types';
 
+import './DogMap.css';
+
 const MapContainer = () => <div></div>;
 const Marker = ({lat, lng}) => <div lat={lat} lng={lng}><MaterialIcon color='#dc3545' icon="pets"/></div>;
 
@@ -34,7 +36,7 @@ class DogMap extends PureComponent {
         const markersList = this.generateMarkers();
 
         return (
-            <div className='google-map' style={{height: '640px'}}>
+            <div className='dog-map'>
                 <GoogleMapReact
                     defaultCenter={{ lat: 52.2297, lng: 21.0122 }}
                     defaultZoom={2}>
