@@ -4,7 +4,7 @@ import { Link, withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { Photos } from './components/Photos';
-import { Map } from './components/Map';
+import { Maps } from './components/Maps';
 
 import { photosGet, photoGetDetails, photosClear } from 'actions/photosActions';
 import { alertShow } from 'actions/alertActions';
@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getPhotos: () => {
             dispatch(() => {
-                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=canine&per_page=10&api_key=${KEY}&format=json&nojsoncallback=1`)
+                fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.search&tags=canine&per_page=100&api_key=${KEY}&format=json&nojsoncallback=1`)
                     .then((resp) => resp.json())
                     .then((resp) => {
                         if (resp.stat === 'fail') {
@@ -73,11 +73,11 @@ class Dashboard extends Component {
                 <h1>Flickr Photo Gallery</h1>
                 <ul className="nav">
                     <li className="nav-item"><Link className="nav-link" to={'/'}>Photos</Link></li>
-                    <li className="nav-item"><Link className="nav-link" to={'/map'}>Map</Link></li>
+                    <li className="nav-item"><Link className="nav-link" to={'/maps'}>Maps</Link></li>
                 </ul>
                 
-                <Route exact path="/" render={() => <Photos photos={photos} callbacks={callbacks}/>} />
-                <Route path="/map" render={() => <Map photos={photos} callbacks={callbacks}/>} />
+                <Route exact path="/" render={() => <Photos photos={photos} callbacks={callbacks}/>}/>
+                <Route path="/maps" render={() => <Maps photos={photos} callbacks={callbacks}/>}/>
             </div>
         );
     }

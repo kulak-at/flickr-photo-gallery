@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { PhotoTile } from './components/PhotoTile';
 import { Spinner } from 'components/Spinner';
 
 
-class Photos extends Component {
+class Photos extends PureComponent {
     constructor (props) {
         super(props);
 
@@ -37,11 +37,13 @@ class Photos extends Component {
     }
 
     render () {
+        const { getPhotoDetails } = this.props.callbacks;
+
         const _generateList = () => {
             return this.props.photos.list.map((item, idx) => {
                 if (idx <= this.state.photoLimit) {
                     return (
-                        <PhotoTile key={idx} photoData={item} getDetails={this.props.callbacks.getPhotoDetails}/>
+                        <PhotoTile key={idx} photoData={item} getDetails={getPhotoDetails}/>
                     );
                 }
             });
