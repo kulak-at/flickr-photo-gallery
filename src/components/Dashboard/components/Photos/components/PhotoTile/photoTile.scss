@@ -1,0 +1,17 @@
+.photo-tile-container {
+    margin-top: 1rem;
+
+    &.loading {
+        opacity: 0.5;
+    }
+
+    .photo-tile {
+        min-height: 350px;
+        background-size: cover;
+        margin-bottom: 0.5rem;
+    }
+  
+    .card-body {
+        min-height: 350px;
+    }
+}
