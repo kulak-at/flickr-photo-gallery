@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { Spinner } from 'components/Spinner';
+import { Spinner } from 'components/common/Spinner';
 import { DogMap } from './components/DogMap';
 
 
@@ -19,7 +19,7 @@ class Maps extends PureComponent {
         const { getPhotoDetails } = this.props.callbacks;
 
         return (
-            this.props.photos.list.length ? <DogMap photos={photos} getDetails={getPhotoDetails}/> : <Spinner/>
+            photos.list.length ? <DogMap photos={photos} getDetails={getPhotoDetails}/> : <Spinner/>
         );
     }
 }

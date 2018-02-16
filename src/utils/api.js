@@ -10,7 +10,7 @@ function api () {
 
     //////////////
     function get (method, queries) {
-        return fetch(`https://api.flickr.com/services/rest/?method=flickr.${method}${queries}&api_key=${API_KEY}&format=json&nojsoncallback=1`)
+        return fetch(`https://api.flickr.com/services/rest/?method=flickr.${method}${queries}&safe_search=1&api_key=${API_KEY}&format=json&nojsoncallback=1`)
         .then(resp => resp.json())
         .then(resp => {
             if (resp.code) {

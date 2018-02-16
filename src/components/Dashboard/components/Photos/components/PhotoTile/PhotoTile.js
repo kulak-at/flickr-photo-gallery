@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './photoTile.css';
 
-import { Spinner } from 'components/Spinner';
+import { Spinner } from 'components/common/Spinner';
 
 class PhotoTile extends PureComponent {
     componentWillMount () {
@@ -15,10 +15,12 @@ class PhotoTile extends PureComponent {
 
         const classNames = classnames({
             'photo-tile-container': true,
-            loading: !this.props.photoData.details.id
+            loading: !photoData.details.id
         });
         
         const _renderDetailedInfo = () => {
+            const dateFormatted = photoData.details.dates.taken.substring(0, 10);
+
             return (
                 <div>
                     <div 
@@ -26,8 +28,12 @@ class PhotoTile extends PureComponent {
                         style={{backgroundImage: `url(https://farm${photoData.farm}.staticflickr.com/${photoData.server}/${photoData.id}_${photoData.secret}.jpg)`}}>
                     </div>
                     <h5 className="card-title">{photoData.details.title._content}</h5>
-                    <div className="card-text">Author: {photoData.details.owner.username}</div>
-                    <div className="card-text">Date: {photoData.details.dates.taken}</div>
+                    <div className="card-text">
+                        <span className="text-info">Author:</span> {photoData.details.owner.username}
+                    </div>
+                    <div className="card-text">
+                        <span className="text-info">Taken on:</span> {dateFormatted}
+                    </div>
                     <hr/>
                     <p className="card-text">{photoData.details.description._content}</p>
                 </div>

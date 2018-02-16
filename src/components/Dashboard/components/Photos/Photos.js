@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MaterialIcon from 'material-icons-react';
 
 import { PhotoTile } from './components/PhotoTile';
-import { Spinner } from 'components/Spinner';
+import { Spinner } from 'components/common/Spinner';
 
 
 class Photos extends PureComponent {
@@ -40,10 +40,11 @@ class Photos extends PureComponent {
     render () {
         const { getPhotoDetails } = this.props.callbacks;
         const { list } = this.props.photos;
+        const { photoLimit } = this.state;
 
         const _generateList = () => {
             return list.map((item, idx) => {
-                if (idx <= this.state.photoLimit) {
+                if (idx <= photoLimit) {
                     return (
                         <PhotoTile key={idx} photoData={item} getDetails={getPhotoDetails}/>
                     );
@@ -52,10 +53,10 @@ class Photos extends PureComponent {
         };
 
         const _generateScrollInfo = () => {
-            if (list.length && this.state.photoLimit < list.length) {
+            if (list.length && photoLimit < list.length) {
                 return (
                     <div className="col-sm-12 text-center">
-                        <div className="my-5 pb-2">
+                        <div className="my-5 pb-5">
                             <div>Scroll down to load more photos</div>
                             <MaterialIcon icon="cached" size='large'/>
                         </div>
