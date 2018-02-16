@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 
@@ -13,14 +13,24 @@ const customStyles = {
     }
 };
 
-const PhotoModal = ({isOpen, closeModal, imgPath}) => (
-    <Modal
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-        style={customStyles}>
-        <img src={imgPath} alt="dog"/>
-    </Modal>
-);
+class PhotoModal extends PureComponent {
+    componentWillMount () {
+        Modal.setAppElement('body');
+    }
+
+    render () {
+        const { isOpen, closeModal, imgPath } = this.props;
+
+        return (
+            <Modal
+                isOpen={isOpen}
+                onRequestClose={closeModal}
+                style={customStyles}>
+                <img src={imgPath} alt="dog"/>
+            </Modal>
+        );
+    }
+}
 
 export { PhotoModal };
 
