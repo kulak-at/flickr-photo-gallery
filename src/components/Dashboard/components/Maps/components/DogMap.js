@@ -10,9 +10,7 @@ const Marker = ({lat, lng}) => <div lat={lat} lng={lng}><MaterialIcon color='#dc
 
 class DogMap extends PureComponent {
     componentWillMount () {
-        this.props.photos.list.map((photo) => {
-            this.props.getDetails(photo.id);
-        });
+        this.props.photos.list.map((photo) => this.props.getDetails(photo.id));
     }
 
     generateMarkers() {
@@ -28,6 +26,8 @@ class DogMap extends PureComponent {
                             lng={parseInt(item.details.location.longitude, 10)}/>
                     );
                 }
+
+                return null;
             });
         }
     }

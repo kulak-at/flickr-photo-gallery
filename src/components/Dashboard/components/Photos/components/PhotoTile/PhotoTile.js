@@ -20,12 +20,16 @@ class PhotoTile extends PureComponent {
         
         const _renderDetailedInfo = () => {
             const dateFormatted = photoData.details.dates.taken.substring(0, 10);
+            const photoUrl = `https://farm${photoData.farm}.staticflickr.com/${photoData.server}/${photoData.id}_${photoData.secret}.jpg`
 
             return (
                 <div>
                     <div 
                         className="photo-tile" 
-                        style={{backgroundImage: `url(https://farm${photoData.farm}.staticflickr.com/${photoData.server}/${photoData.id}_${photoData.secret}.jpg)`}}>
+                        style={{backgroundImage: `url(${photoUrl})`}}
+                        onClick={() => {
+                            this.props.expandPhoto(photoUrl)
+                        }}>
                     </div>
                     <h5 className="card-title">{photoData.details.title._content}</h5>
                     <div className="card-text">
@@ -60,5 +64,6 @@ export { PhotoTile };
 
 PhotoTile.propTypes = {
     photoData: PropTypes.object,
-    getDetails: PropTypes.func
+    getDetails: PropTypes.func,
+    expandPhoto: PropTypes.func
 };

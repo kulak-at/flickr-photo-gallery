@@ -5,6 +5,7 @@
   .photo-tile-container .photo-tile {
     min-height: 350px;
     background-size: cover;
-    margin-bottom: 0.5rem; }
+    margin-bottom: 0.5rem;
+    cursor: pointer; }
   .photo-tile-container .card-body {
     min-height: 350px; }

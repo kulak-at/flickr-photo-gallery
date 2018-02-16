@@ -38,7 +38,7 @@ class Photos extends PureComponent {
     }
 
     render () {
-        const { getPhotoDetails } = this.props.callbacks;
+        const { getPhotoDetails, openModal } = this.props.callbacks;
         const { list } = this.props.photos;
         const { photoLimit } = this.state;
 
@@ -46,9 +46,11 @@ class Photos extends PureComponent {
             return list.map((item, idx) => {
                 if (idx <= photoLimit) {
                     return (
-                        <PhotoTile key={idx} photoData={item} getDetails={getPhotoDetails}/>
+                        <PhotoTile key={idx} photoData={item} getDetails={getPhotoDetails} expandPhoto={openModal}/>
                     );
                 }
+
+                return null;
             });
         };
 
@@ -61,11 +63,11 @@ class Photos extends PureComponent {
                             <MaterialIcon icon="cached" size='large'/>
                         </div>
                     </div>
-                )
-            } else {
-                return null;
+                );
             }
-        }
+            
+            return null;
+        };
 
         const photoContent = list.length ? _generateList() : <Spinner/>;
 

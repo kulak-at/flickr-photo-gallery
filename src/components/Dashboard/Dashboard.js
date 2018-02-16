@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { PhotoModal } from 'components/common/PhotoModal';
 import { Photos } from './components/Photos';
 import { Maps } from './components/Maps';
 
@@ -46,13 +47,37 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class Dashboard extends Component {
+    constructor () {
+        super();
+
+        this.state = {
+            modalIsOpen: false,
+            modalImgPath: ''
+        };
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    openModal(modalImgPath) {
+        this.setState({
+            modalIsOpen: true,
+            modalImgPath
+        });
+    }
+   
+    closeModal() {
+        this.setState({modalIsOpen: false});
+    }
+
     render () {
         const { getPhotos, getPhotoDetails, clearPhotos, photos } = this.props;
 
         const callbacks = {
             getPhotos,
             getPhotoDetails,
-            clearPhotos
+            clearPhotos,
+            openModal: this.openModal
         };
 
         return (
@@ -64,6 +89,11 @@ class Dashboard extends Component {
                 
                 <Route exact path="/" render={() => <Photos photos={photos} callbacks={callbacks}/>}/>
                 <Route path="/maps" render={() => <Maps photos={photos} callbacks={callbacks}/>}/>
+                <PhotoModal
+                    isOpen={this.state.modalIsOpen}
+                    closeModal={this.closeModal}
+                    imgPath={this.state.modalImgPath}>
+                </PhotoModal>
             </div>
         );
     }

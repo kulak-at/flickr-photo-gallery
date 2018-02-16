@@ -20,7 +20,6 @@ module.exports = {
             4
         ],
         "linebreak-style": [ 0, "unix" ],
-        "array-callback-return": false,
         "quotes": [
             "error",
             "single"
